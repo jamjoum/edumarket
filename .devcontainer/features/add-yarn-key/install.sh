@@ -10,13 +10,18 @@ if command -v apt-get >/dev/null 2>&1; then
   KEYRING_DIR=/usr/share/keyrings
   mkdir -p "$KEYRING_DIR"
 
-  if curl -fsSL https://dl.yarnpkg.com/debian/pubkey.gpg | gpg --dearmor -o "$KEYRING_DIR/yarn-archive-keyring.gpg"; then
+  tmpkey=$(mktemp)
+  trap 'rm -f "$tmpkey"' EXIT
+  curl -fsSL https://dl.yarnpkg.com/debian/pubkey.gpg -o "$tmpkey"
+
+  if gpg --batch --yes --dearmor -o "$KEYRING_DIR/yarn-archive-keyring.gpg" "$tmpkey"; then
     echo "[add-yarn-key] Yarn key installed to $KEYRING_DIR/yarn-archive-keyring.gpg"
   else
     echo "[add-yarn-key] fallback: apt-key add (deprecated)"
-    curl -fsSL https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
+    apt-key add "$tmpkey"
   fi
 
+  chmod 644 "$KEYRING_DIR/yarn-archive-keyring.gpg" || true
   echo "[add-yarn-key] Refreshing apt package index after adding key..."
   apt-get update -y
 else
