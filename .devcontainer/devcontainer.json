@@ -4,6 +4,11 @@
 
   // ── Docker-in-Docker pour pouvoir utiliser docker compose ──────────
   "features": {
+    "./.devcontainer/features/add-yarn-key": {},
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {
+      "version": "latest",
+      "enableNonRootDocker": true
+    },
     "ghcr.io/devcontainers/features/java:1": {
       "version": "21",
       "installMaven": true,

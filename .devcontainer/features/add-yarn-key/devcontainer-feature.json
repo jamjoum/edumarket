@@ -1,0 +1,7 @@
+{
+  "id": "add-yarn-key",
+  "name": "Add Yarn APT key",
+  "version": "1.0.0",
+  "description": "Installs the Yarn APT repository GPG key to avoid NO_PUBKEY errors during feature installs.",
+  "options": {}
+}
