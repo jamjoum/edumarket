@@ -1,6 +1,7 @@
 {
   "name": "EduMarket – Dev Environment",
   "image": "mcr.microsoft.com/devcontainers/universal:2",
+  "workspaceFolder": "/workspaces/codespaces-blank",
 
   // ── Ajout de la clé Yarn avant l'installation de Docker-in-Docker ─────
   "features": {
@@ -83,6 +84,12 @@
 
   // ── Script de démarrage post-création ─────────────────────────────
   "postCreateCommand": "bash .devcontainer/setup.sh",
+
+  // ── Variables d'environnement dans le conteneur ───────────────────
+  "containerEnv": {
+    "JAVA_HOME": "/usr/lib/jvm/java-21-openjdk-amd64",
+    "MAVEN_OPTS": "-Xmx1g"
+  },
 
   // ── Utilisateur non-root (utiliser un utilisateur présent dans l'image)
   // Remplacé "codespace" par "vscode" car l'image de base n'expose pas

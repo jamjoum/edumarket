@@ -12,6 +12,26 @@ echo "║         EduMarket – Setup Environnement Dev              ║"
 echo "╚══════════════════════════════════════════════════════════╝"
 echo ""
 
+# Installer des paquets système utiles (psql, git, build tools) si apt est disponible
+if command -v apt-get >/dev/null 2>&1; then
+  echo "🔧 Installation des paquets système requis (psql, git, build-essential, ca-certificates)..."
+  export DEBIAN_FRONTEND=noninteractive
+  apt-get update -y
+  apt-get install -y --no-install-recommends \
+    postgresql-client \
+    git \
+    build-essential \
+    ca-certificates \
+    wget \
+    unzip \
+    gnupg \
+    curl || true
+  echo "✅ Paquets système installés (si disponibles)."
+  echo ""
+else
+  echo "ℹ️  apt-get non trouvé — saut de l'installation des paquets système." 
+fi
+
 # ── Vérifications ─────────────────────────────────────────────────────────
 echo "🔍 Vérification des outils..."
 java  --version
