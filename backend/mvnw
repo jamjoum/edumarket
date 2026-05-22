@@ -1,0 +1,4 @@
+#!/bin/sh
+# Maven Wrapper – permet de lancer Maven sans l'avoir installé globalement
+# Usage : ./mvnw clean package
+exec mvn "$@"
