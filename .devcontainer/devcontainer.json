@@ -2,9 +2,9 @@
   "name": "EduMarket – Dev Environment",
   "image": "mcr.microsoft.com/devcontainers/universal:2",
 
-  // ── Docker-in-Docker pour pouvoir utiliser docker compose ──────────
+  // ── Ajout de la clé Yarn avant l'installation de Docker-in-Docker ─────
   "features": {
-    "./.devcontainer/features/add-yarn-key": {},
+    "./features/add-yarn-key": {},
     "ghcr.io/devcontainers/features/docker-in-docker:2": {
       "version": "latest",
       "enableNonRootDocker": true
@@ -84,6 +84,8 @@
   // ── Script de démarrage post-création ─────────────────────────────
   "postCreateCommand": "bash .devcontainer/setup.sh",
 
-  // ── Utilisateur non-root ──────────────────────────────────────────
-  "remoteUser": "codespace"
+  // ── Utilisateur non-root (utiliser un utilisateur présent dans l'image)
+  // Remplacé "codespace" par "vscode" car l'image de base n'expose pas
+  // toujours l'utilisateur "codespace" et provoque l'erreur de démarrage.
+  "remoteUser": "vscode"
 }
