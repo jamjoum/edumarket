@@ -5,14 +5,17 @@ FROM eclipse-temurin:21-jdk-alpine AS builder
 
 WORKDIR /build
 
-# Copie uniquement le pom.xml pour tirer parti du cache Maven
+# Copie le wrapper Maven et le pom.xml pour tirer parti du cache Maven
+# Le wrapper téléchargera une version de Maven si nécessaire
 COPY pom.xml .
+RUN apk add --no-cache maven
+
+# Installer Maven dans l'image builder (alpine) pour pouvoir utiliser `mvn`
 RUN mvn dependency:go-offline -B --no-transfer-progress 2>/dev/null || true
 
 # Copie du code source et build
 COPY src ./src
-RUN ./mvnw clean package -DskipTests --no-transfer-progress 2>/dev/null || \
-    mvn clean package -DskipTests --no-transfer-progress
+RUN mvn clean package -DskipTests --no-transfer-progress
 
 # ═══════════════════════════════════════════════════════════════
 # Stage 2 – Runtime (JRE uniquement)

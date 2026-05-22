@@ -1,6 +1,10 @@
 {
   "name": "EduMarket – Dev Environment",
-  "image": "mcr.microsoft.com/devcontainers/universal:2",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".",
+    "args": {}
+  },
   "workspaceFolder": "/workspaces/codespaces-blank",
 
   // ── Ajout de la clé Yarn avant l'installation de Docker-in-Docker ─────
@@ -91,8 +95,8 @@
     "MAVEN_OPTS": "-Xmx1g"
   },
 
-  // ── Utilisateur non-root (utiliser un utilisateur présent dans l'image)
-  // Remplacé "codespace" par "vscode" car l'image de base n'expose pas
-  // toujours l'utilisateur "codespace" et provoque l'erreur de démarrage.
-  "remoteUser": "vscode"
+  // ── Utilisateur du conteneur
+  // L'image de base utilisée ici n'expose pas forcément l'utilisateur
+  // "vscode"; utiliser "root" évite l'erreur au démarrage.
+  "remoteUser": "root"
 }

@@ -12,6 +12,42 @@ echo "║         EduMarket – Setup Environnement Dev              ║"
 echo "╚══════════════════════════════════════════════════════════╝"
 echo ""
 
+# ── Configuration Java ────────────────────────────────────────────────────
+echo "🔧 Configuration des chemins Java..."
+
+# Créer les répertoires nécessaires
+mkdir -p /usr/lib/jvm
+
+# Détecter et créer un symlink pour Java via SDKMAN
+if [ -d "/usr/local/sdkman/candidates/java" ]; then
+  # Le chemin par défaut de SDKMAN après installation
+  JAVA_PATH="/usr/local/sdkman/candidates/java/current"
+  if [ -L "$JAVA_PATH" ] || [ -d "$JAVA_PATH" ]; then
+    ln -sf "$JAVA_PATH" /usr/lib/jvm/java-21-openjdk-amd64 || true
+    echo "✅ Symlink Java créé: /usr/lib/jvm/java-21-openjdk-amd64 → $JAVA_PATH"
+  fi
+fi
+
+# Fallback: Détecter Java via PATH et créer le symlink
+if [ ! -d "/usr/lib/jvm/java-21-openjdk-amd64" ]; then
+  JAVA_BIN=$(which java 2>/dev/null || echo "")
+  if [ -n "$JAVA_BIN" ]; then
+    # Résoudre le chemin réel (suivre les symlinks)
+    JAVA_HOME=$(readlink -f "$JAVA_BIN" 2>/dev/null | sed 's|/bin/java$||' || dirname "$JAVA_BIN" | sed 's|/bin$||')
+    if [ -d "$JAVA_HOME" ]; then
+      ln -sf "$JAVA_HOME" /usr/lib/jvm/java-21-openjdk-amd64 || true
+      echo "✅ Symlink Java créé (fallback): /usr/lib/jvm/java-21-openjdk-amd64 → $JAVA_HOME"
+    fi
+  fi
+fi
+
+# Exporter JAVA_HOME pour les commandes suivantes
+export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
+export PATH="$JAVA_HOME/bin:$PATH"
+
+echo "ℹ️  JAVA_HOME exportée: $JAVA_HOME"
+echo ""
+
 # Installer des paquets système utiles (psql, git, build tools) si apt est disponible
 if command -v apt-get >/dev/null 2>&1; then
   echo "🔧 Installation des paquets système requis (psql, git, build-essential, ca-certificates)..."
