@@ -39,12 +39,18 @@ echo "✅ Cache Maven prêt."
 echo ""
 
 # ── Démarrage de la stack Docker ─────────────────────────────────────────
-echo "🐳 Démarrage de la stack Docker (PostgreSQL)..."
-docker compose up -d postgres
+if command -v docker >/dev/null 2>&1; then
+  echo "🐳 Démarrage de la stack Docker (PostgreSQL)..."
+  docker compose up -d postgres
 
-echo "⏳ Attente démarrage PostgreSQL..."
-timeout 60 bash -c 'until docker compose exec -T postgres pg_isready -U edumarket 2>/dev/null; do sleep 2; done'
-echo "✅ PostgreSQL prêt !"
+  echo "⏳ Attente démarrage PostgreSQL..."
+  timeout 60 bash -c 'until docker compose exec -T postgres pg_isready -U edumarket 2>/dev/null; do sleep 2; done'
+  echo "✅ PostgreSQL prêt !"
+else
+  echo "⚠️  Docker n'est pas disponible dans ce conteneur."
+  echo "   La stack PostgreSQL ne sera pas démarrée automatiquement."
+fi
+
 echo ""
 
 # ── Résumé ────────────────────────────────────────────────────────────────

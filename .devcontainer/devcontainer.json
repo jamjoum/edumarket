@@ -4,10 +4,6 @@
 
   // ── Docker-in-Docker pour pouvoir utiliser docker compose ──────────
   "features": {
-    "ghcr.io/devcontainers/features/docker-in-docker:2": {
-      "version": "latest",
-      "enableNonRootDocker": true
-    },
     "ghcr.io/devcontainers/features/java:1": {
       "version": "21",
       "installMaven": true,
@@ -52,11 +48,7 @@
         "java.compile.nullAnalysis.mode": "automatic",
         "spring-boot.ls.java.home": "/usr/lib/jvm/java-21-openjdk-amd64",
         "editor.formatOnSave": true,
-        "editor.defaultFormatter": "esbenp.prettier-vscode",
-        "[java]": {
-          "editor.defaultFormatter": "redhat.java"
-        },
-        "typescript.preferences.importModuleSpecifier": "relative",
+        "js/ts.preferences.importModuleSpecifier": "relative",
         "angular.enable-strict-mode-prompt": false,
         "terminal.integrated.defaultProfile.linux": "bash"
       }

@@ -1,8 +1,9 @@
 package com.edumarket.proxy;
 
 import com.edumarket.dto.CourseDTO;
+import com.edumarket.repository.CourseRepository;
+import com.edumarket.repository.UserRepository;
 import com.edumarket.service.CourseService;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
@@ -35,8 +36,11 @@ import java.util.concurrent.ConcurrentHashMap;
 @Slf4j
 @Service
 @Primary
-@RequiredArgsConstructor
 public class CourseServiceProxy extends CourseService {
+
+    public CourseServiceProxy(CourseRepository courseRepository, UserRepository userRepository) {
+        super(courseRepository, userRepository);
+    }
 
     /** Cache simple en mémoire : clé → (payload, expiry) */
     private final Map<String, CacheEntry<?>> cache = new ConcurrentHashMap<>();
